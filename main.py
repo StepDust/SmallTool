@@ -3,12 +3,12 @@ import subprocess
 import os
 import sys
 import signal
-from api import API
-from dust_utils import setup_logger
+from command.api import API
+from dust_utils import setup_loguru
 from dust_utils.file_utils import PipUtils
 
 # 初始化日志
-logger = setup_logger()
+logger = setup_loguru()
 
 npm_process = None  # 确保全局变量在函数外定义
 
@@ -63,7 +63,7 @@ def create_window():
             js_api=API(),
         )
     except FileNotFoundError as e:
-        print(
+        logger.error(
             "找不到 npm 命令，请确保 Node.js 和 npm 已正确安装，并且 npm 在环境变量中。"
         )
         raise e  # 重新抛出异常，确保程序不继续运行
@@ -76,9 +76,9 @@ def stop_npm_process():
         try:
             os.kill(npm_process.pid, signal.SIGTERM)
         except Exception as e:
-            print(f"停止 npm 进程时发生错误: {e}")
+            logger.error(f"停止 npm 进程时发生错误: {e}")
     else:
-        print("npm 进程未启动")
+        logger.error("npm 进程未启动")
 
 
 if __name__ == "__main__":

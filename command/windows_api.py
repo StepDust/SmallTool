@@ -11,7 +11,7 @@ def with_application(func):
     return wrapper
 
 
-class API:
+class WindowsAPI:
     def __init__(self):
         self.last_move_time = 0
         self.move_threshold = 0.016  # 约 60fps，单位：秒
